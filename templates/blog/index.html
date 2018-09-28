@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% load thumbnail %}
+{% block main %}
+    <!-- 警告框 -->
+    <div class="well alert hidden-xs fade in">
+        <button class="close" data-dismiss="alert" type="button">×</button>
+        紧急上线，很多功能未完善
+    </div>
+    {% if error_msg %}
+        <p>{{ error_msg }}</p>
+    {% endif %}
+
+    <!--首页文章列表 -->
+    {% for post in post_list %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+            </div>
+
+            {#            <div class="post-info">#}
+
+            {#                <div class="post-tags">#}
+            {#                    {{% for tag in post.tags %}}#}
+            {#                    <a>#}
+            {#                        <span class="label label-vmaig-1 btn">{{ tag.name }}</span>#}
+            {#                    </a>#}
+            {#                    {{% endfor %}}#}
+            {#                </div>#}
+            {##}
+            {#            </div>#}
+
+
+            <div class="panel-body">
+                <div class="col-md-4">
+                    <figure>
+                        <img src="/static/{{ post.image }}" alt="" height="150px" width="200px">
+                    </figure>
+                </div>
+                <div class="col-md-8">
+                    <span class="post-excerpt">
+                        <p>{{ post.excerpt }}
+                        </p>
+                    </span>
+                    <p class="auth-span">
+                        <span class="glyphicon glyphicon-calendar">
+                            {{ post.created_time|date:"Y-m-d" }}</span>
+                        <span class="glyphicon glyphicon-comment">
+                            {{ post.comment_set.count }}</span>
+                        <span class="glyphicon glyphicon-eye-open">
+                            {{ post.views }}
+                        </span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <div class="no-post">暂时还没有发布的文章！</div>
+    {% endfor %}
+    {% if is_paginated %}
+        <div class="pagination-simple">
+            <!-- 如果当前页还有上一页，显示一个上一页的按钮 -->
+            {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}">上一页</a>
+            {% endif %}
+            <!-- 显示当前页面信息 -->
+            <span class="current">第 {{ page_obj.number }} 页 / 共 {{ paginator.num_pages }} 页</span>
+            <!-- 如果当前页还有下一页，显示一个下一页的按钮 -->
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">下一页</a>
+            {% endif %}
+        </div>
+    {% endif %}
+{% endblock main %}
+
+
+
+
+
+
+

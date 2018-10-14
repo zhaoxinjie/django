@@ -49,28 +49,29 @@
                         联系
                     </a>
                 </li>
-                <form class="navbar-form navbar-left" role="search" _lpchecked="1">
+                <form class="navbar-form navbar-left" role="search" _lpchecked="1" action="{% url 'blog:search' %}">
                     <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Search">
+                        <input type="text" class="form-control" name="q" placeholder="搜索" required>
                     </div>
                     <button type="submit" class="btn btn-default">Submit</button>
                 </form>
             </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li>
-                    <a id="nav-login" data-toggle="modal" data-target="#login-modal"
-                       style="padding-right:0px;cursor:pointer;" data-original-title="" title="">
-                        登陆
-                    </a>
-                </li>
-                <li>
-                    <a id="nav-register" data-toggle="modal" data-target="#register-modal"
-                       style="padding-right:0px;cursor:pointer">
-                        注册
-                    </a>
-                </li>
-
-            </ul>
+            {#            取消登录和注册#}
+            {#            <ul class="nav navbar-nav navbar-right">#}
+            {#                <li>#}
+            {#                    <a id="nav-login" data-toggle="modal" data-target="#login-modal"#}
+            {#                       style="padding-right:0px;cursor:pointer;" data-original-title="" title="">#}
+            {#                        登陆#}
+            {#                    </a>#}
+            {#                </li>#}
+            {#                <li>#}
+            {#                    <a id="nav-register" data-toggle="modal" data-target="#register-modal"#}
+            {#                       style="padding-right:0px;cursor:pointer">#}
+            {#                        注册#}
+            {#                    </a>#}
+            {#                </li>#}
+            {##}
+            {#            </ul>#}
         </div>
     </div>
 </header>
@@ -112,52 +113,98 @@
         </div>
         {# 右侧#}
         <div class="col-md-4 col-lg-3 hidden-xs">
-            {% block toc %}
-            {% endblock toc %}
+{#            {% block toc %}#}
+{#            {% endblock toc %}#}
             {# 标签云#}
             <div id="tags" style="margin-top: 20px">
-                <div class="panel">
+                <div class="panel panel-default">
                     <div class="panel-heading">
                         <h3 class="panel-title">
                             <span class="glyphicon glyphicon-tags"></span>
                             标签云
                         </h3>
                     </div>
-                    <div class="panel-body">
-                        <svg width="250" height="250">
-                            <p>biaoqianyun</p>
-                        </svg>
-                    </div>
+                    {% get_tags as tag_list %}
+                    <ul id="tags-list" class="list-group collapse in">
+                        {% for tag in tag_list %}
+                            <li class="list-group-item">
+                                <a href="{% url 'blog:tag' tag.pk %}">{{ tag.name }}</a>
+                            </li>
+                        {% empty %}
+                            暂无标签！
+                        {% endfor %}
+                    </ul>
                 </div>
 
             </div>
+            {# 文章归档#}
+            <div id="post-achieves" class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <span class="glyphicon glyphicon-book"></span>
+                        时间归档
+                    </h3>
+                </div>
+                <ul id="achieve-list" class="list-group collapse in">
+                    {% archives as date_list %}
+                    {% for date in date_list %}
+                        <li class="list-group-item">
+                            <a href="{% url 'blog:archives' date.year date.month %}">
+                                {{ date.year }} 年 {{ date.month }} 月</a>
+                        <span class="badge">{% get_count_of_date date.year date.month %}</span>
+                        </li>
+                    {% empty %}
+                        暂无归档！
+                    {% endfor %}
+                </ul>
+            </div>
 
-            {#        最热文章，现在先设置为最新的#}
-            <div id="hot-posts" class="panel">
+            {# 分类归档 #}
+            <div id="post-category" class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <span class="glyphicon glyphicon-book"></span>
+                        分类归档
+                    </h3>
+                </div>
+                {% get_categories as category_list %}
+                <ul id="category-list" class="list-group collapse in">
+                    {% for category in category_list %}
+                        <li class="list-group-item">
+                            <a href="{% url 'blog:category' category.pk %}">{{ category.name }}</a><span class="badge">{% get_count_of_category category.pk %}</span>
+                        </li>
+                    {% empty %}
+                        暂无分类！
+                    {% endfor %}
+                </ul>
+            </div>
+
+
+            {# 最热文章，现在先设置为最新的#}
+            <div id="hot-posts" class="panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">
                         <span class="glyphicon glyphicon-flag"></span>
                         热门文章
                     </h3>
                 </div>
-                <div class="panel-body">
-                    <ul id="hot-post-list" class="list-group collapse in">
-                        {% get_recent_posts as recent_post_list %}
-                        {% for post in recent_post_list %}
-                            <li class="list-group-item">
+                <ul id="hot-post-list" class="list-group collapse in">
+                    {% get_most_views_host as hot_post_list %}
+                    {% for post in hot_post_list %}
+                        <li class="list-group-item">
                                     <span class="hot-post-title"><a
                                             href="{{ post.get_absolute_url }}">{{ post.title }}</a></span>
-                                <span class="badge">{{ post.views }}</span>
-                            </li>
-                        {% empty %}
-                            暂无文章！
-                        {% endfor %}
-                    </ul>
-                </div>
+                            <span class="badge">{{ post.views }}</span>
+                        </li>
+                    {% empty %}
+                        暂无文章！
+                    {% endfor %}
+                </ul>
             </div>
 
+            {#最新评论#}
             <div id="latest-comment">
-                <div class="panel">
+                <div class="panel panel-default">
                     <div class="panel-heading">
                         <h3 class="panel-title">
                             <span class="glyphicon glyphicon-comment"></span>
@@ -167,7 +214,7 @@
                     <ul id="latest-comment-list" class="list-group collapse in">
                         {% comments as comment_list %}
                         {% for comment in comment_list %}
-                            <li class="list-group-item clearfix">
+                            <li class="list-group-item">
                                 <a>{{ comment.name }} 评论:{{ comment.text }}</a>
                             </li>
                         {% empty %}
@@ -178,17 +225,20 @@
             </div>
 
             <div id="communicate">
-                <div class="panel">
+                <div class="panel panel-default">
                     <div class="panel-heading">
                         <h3 class="panel-title">
                             <span class="glyphicon glyphicon-link"></span>
                             友情链接
                         </h3>
                     </div>
-                    <div id="links" class="list-group collapse in">
-                        <a title="阿仑的博客" target="_blank" href="http://zhyoulun.com/"
-                           class="btn btn-xs btn-danger">阿仑的博客</a>
+                    <div class="panel-body">
+                        <div id="links" class="list-group collapse in">
+                            <a title="阿仑的博客" target="_blank" href="http://zhyoulun.com/"
+                               class="btn btn-xs btn-danger">阿仑的博客</a>
+                        </div>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -205,19 +255,6 @@
         </div>
     </div>
 </footer>
-
-{#    <!-- Mobile Menu -->#}
-{#    <div class="overlay overlay-hugeinc">#}
-{#        <button type="button" class="overlay-close"><span class="ion-ios-close-empty"></span></button>#}
-{#        <nav>#}
-{#            <ul>#}
-{#                <li><a href="index.html">首页</a></li>#}
-{#                <li><a href="full-width.html">博客</a></li>#}
-{#                <li><a href="about.html">关于</a></li>#}
-{#                <li><a href="contact.html">联系</a></li>#}
-{#            </ul>#}
-{#        </nav>#}
-{#    </div>#}
 
 <script src="{% static 'blog/js/script.js' %}"></script>
 </body>

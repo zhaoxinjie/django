@@ -131,7 +131,6 @@ class PostDetailView(DetailView):
         post.body = md.convert(post.body)
         post.toc = md.toc
         return post
-        return post
 
     def get_context_data(self, **kwargs):
         # 覆写 get_context_data 的目的是因为除了将 post 传递给模板外（DetailView 已经帮我们完成），
@@ -144,5 +143,3 @@ class PostDetailView(DetailView):
             'comment_list': comment_list
         })
         return context
-
-

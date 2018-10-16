@@ -1,2 +1,2 @@
 # django
-www.zhaoxinjie.xyz
+http://zhaoxinjie.xyz

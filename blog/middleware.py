@@ -9,7 +9,6 @@
 @time: 2018/11/5 23:34
 """
 
-import time
 from django.http import HttpResponse
 
 from blog.models import Userip
@@ -21,23 +20,28 @@ class AccessMiddleware(object):
         self.get_response = get_response
 
     def __call__(self, request):
-        return self.get_response(request)
+        response = None
+        if hasattr(self, 'process_request'):
+            response = self.process_request(request)
+        if not response:
+            response = self.get_response(request)
+        if hasattr(self, 'process_response'):
+            response = self.process_response(request, response)
+        return response
 
     def process_exception(self, request, exception):
         return HttpResponse(exception)
 
     def process_request(self, request):
         meta = request.META
-        print("[%s] PATH_INFO=%s, REMOTE_ADDR=%s, HTTP_USER_AGENT=%s" % (
-            time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
-            meta['PATH_INFO'], meta['REMOTE_ADDR'], meta['HTTP_USER_AGENT']))
-
+        # print("[%s] PATH_INFO=%s, REMOTE_ADDR=%s, HTTP_USER_AGENT=%s" % (
+        #     time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
+        #     meta['PATH_INFO'], meta['REMOTE_ADDR'], meta['HTTP_USER_AGENT']))
         if 'HTTP_X_FORWARDED_FOR' in request.META:  # 获取ip
             client_ip = request.META['HTTP_X_FORWARDED_FOR']
             client_ip = client_ip.split(",")[0]  # 所以这里是真实的ip
         else:
             client_ip = request.META['REMOTE_ADDR']  # 这里获得代理ip
-        print(client_ip)
 
         uobj = Userip()
         uobj.ip = client_ip

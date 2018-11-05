@@ -15,7 +15,7 @@ from django.utils.text import slugify
 from markdown.extensions.toc import TocExtension
 
 from comments.models import Comment
-from .models import Post, Category, Tag
+from .models import Post, Category, Tag, Userip
 from comments.forms import CommentForm
 from django.views.generic import ListView, DetailView
 

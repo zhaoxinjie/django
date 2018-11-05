@@ -14,6 +14,7 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from django.utils.html import strip_tags
 from easy_thumbnails.fields import ThumbnailerImageField
+from django.utils import timezone
 
 
 class Category(models.Model):
@@ -115,3 +116,18 @@ class Post(models.Model):
 
         # 调用父类的 save 方法将数据保存到数据库中
         super(Post, self).save(*args, **kwargs)
+
+
+# 访问网站的ip地址和次数
+class Userip(models.Model):
+    ip = models.CharField(verbose_name='IP地址', max_length=30)
+    time = models.DateTimeField(verbose_name='访问时间',auto_now_add=True)
+
+    class Meta:
+        verbose_name = '访问用户信息'
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.ip
+
+

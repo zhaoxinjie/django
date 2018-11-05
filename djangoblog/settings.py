@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 import os
 from decouple import config, Csv
 import dj_database_url
+import blog
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -49,6 +50,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'blog.middleware.AccessMiddleware',
 ]
 
 ROOT_URLCONF = 'djangoblog.urls'

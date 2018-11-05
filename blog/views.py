@@ -11,13 +11,11 @@
 import markdown
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404
-from django.utils.text import slugify
-from markdown.extensions.toc import TocExtension
-
-from comments.models import Comment
-from .models import Post, Category, Tag, Userip
-from comments.forms import CommentForm
 from django.views.generic import ListView, DetailView
+
+from comments.forms import CommentForm
+from comments.models import Comment
+from .models import Post, Category, Tag
 
 
 def index(request):

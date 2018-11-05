@@ -9,12 +9,11 @@
 @time: 2018/9/13 23:52
 """
 import markdown
-from django.db import models
 from django.contrib.auth.models import User
+from django.db import models
 from django.urls import reverse
 from django.utils.html import strip_tags
 from easy_thumbnails.fields import ThumbnailerImageField
-from django.utils import timezone
 
 
 class Category(models.Model):

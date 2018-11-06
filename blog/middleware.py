@@ -14,8 +14,13 @@ from django.http import HttpResponse
 
 from blog.models import Userip
 
+import logging
+
+logger = logging.getLogger('blog.middleware')
+
 
 class AccessMiddleware(object):
+
 
     def __init__(self, get_response):
         self.get_response = get_response
@@ -35,9 +40,13 @@ class AccessMiddleware(object):
 
     def process_request(self, request):
         meta = request.META
-        print("[%s] PATH_INFO=%s, REMOTE_ADDR=%s, HTTP_USER_AGENT=%s" % (
+        # print("[%s] PATH_INFO=%s, REMOTE_ADDR=%s, HTTP_USER_AGENT=%s" % (
+        #     time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
+        #     meta['PATH_INFO'], meta['REMOTE_ADDR'], meta['HTTP_USER_AGENT']))
+        logger.info("[%s] PATH_INFO=%s, REMOTE_ADDR=%s, HTTP_USER_AGENT=%s" % (
             time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
             meta['PATH_INFO'], meta['REMOTE_ADDR'], meta['HTTP_USER_AGENT']))
+        logger.info('meta: ' + meta)
         if 'HTTP_X_FORWARDED_FOR' in request.META:  # 获取ip
             client_ip = request.META['HTTP_X_FORWARDED_FOR']
             client_ip = client_ip.split(",")[0]  # 所以这里是真实的ip

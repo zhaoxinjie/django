@@ -8,6 +8,7 @@
 @file: middleware.py
 @time: 2018/11/5 23:34
 """
+import time
 
 from django.http import HttpResponse
 
@@ -20,7 +21,7 @@ class AccessMiddleware(object):
         self.get_response = get_response
 
     def __call__(self, request):
-        response = None
+        response = self.get_response(request)
         if hasattr(self, 'process_request'):
             response = self.process_request(request)
         if not response:
@@ -34,9 +35,9 @@ class AccessMiddleware(object):
 
     def process_request(self, request):
         meta = request.META
-        # print("[%s] PATH_INFO=%s, REMOTE_ADDR=%s, HTTP_USER_AGENT=%s" % (
-        #     time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
-        #     meta['PATH_INFO'], meta['REMOTE_ADDR'], meta['HTTP_USER_AGENT']))
+        print("[%s] PATH_INFO=%s, REMOTE_ADDR=%s, HTTP_USER_AGENT=%s" % (
+            time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
+            meta['PATH_INFO'], meta['REMOTE_ADDR'], meta['HTTP_USER_AGENT']))
         if 'HTTP_X_FORWARDED_FOR' in request.META:  # 获取ip
             client_ip = request.META['HTTP_X_FORWARDED_FOR']
             client_ip = client_ip.split(",")[0]  # 所以这里是真实的ip

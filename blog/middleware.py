@@ -47,12 +47,15 @@ class AccessMiddleware(object):
             time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
             meta['PATH_INFO'], meta['REMOTE_ADDR'], meta['HTTP_USER_AGENT']))
         logger.info('meta: ' + str(meta))
-        if 'HTTP_X_FORWARDED_FOR' in request.META:  # 获取ip
-            client_ip = request.META['HTTP_X_FORWARDED_FOR']
-            client_ip = client_ip.split(",")[0]  # 所以这里是真实的ip
-        else:
-            client_ip = request.META['REMOTE_ADDR']  # 这里获得代理ip
 
+        # 使用nginx代理添加了remote_addr
+        # if 'HTTP_X_FORWARDED_FOR' in request.META:  # 获取ip
+        #     client_ip = request.META['HTTP_X_FORWARDED_FOR']
+        #     client_ip = client_ip.split(",")[0]  # 所以这里是真实的ip
+        # else:
+        #     client_ip = request.META['REMOTE_ADDR']  # 这里获得代理ip
+
+        client_ip = request.META['HTTP_REMOTE_ADDR']
         if client_ip:
             uobj = Userip()
             uobj.ip = client_ip

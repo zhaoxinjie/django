@@ -44,9 +44,10 @@ class AccessMiddleware(object):
         else:
             client_ip = request.META['REMOTE_ADDR']  # 这里获得代理ip
 
-        uobj = Userip()
-        uobj.ip = client_ip
-        uobj.save()
+        if client_ip:
+            uobj = Userip()
+            uobj.ip = client_ip
+            uobj.save()
         return None
 
     def process_response(self, request, response):

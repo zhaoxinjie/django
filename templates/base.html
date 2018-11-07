@@ -13,8 +13,8 @@
     <link rel="stylesheet" href="{% static 'blog/css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'blog/css/base.css' %}">
     <link rel="stylesheet" href="{% static 'blog/css/index.css' %}">
-    <link rel="shortcut icon" href="{%static "blog/img/favicon.jpg" %}" />
-{# 代码高亮，使用github形式#}
+    <link rel="shortcut icon" href="{% static "blog/img/favicon.jpg" %}"/>
+    {# 代码高亮，使用github形式#}
     <link rel="stylesheet" href="{% static 'blog/css/highlights/github.css' %}">
     <!-- js -->
     <script src="{% static 'blog/js/jquery-2.1.3.min.js' %}"></script>
@@ -116,8 +116,8 @@
         </div>
         {# 右侧#}
         <div class="col-md-4 col-lg-3 hidden-xs">
-{#            {% block toc %}#}
-{#            {% endblock toc %}#}
+            {#            {% block toc %}#}
+            {#            {% endblock toc %}#}
             {# 标签云#}
             <div id="tags" style="margin-top: 20px">
                 <div class="panel panel-default">
@@ -154,7 +154,7 @@
                         <li class="list-group-item">
                             <a href="{% url 'blog:archives' date.year date.month %}">
                                 {{ date.year }} 年 {{ date.month }} 月</a>
-                        <span class="badge">{% get_count_of_date date.year date.month %}</span>
+                            <span class="badge">{% get_count_of_date date.year date.month %}</span>
                         </li>
                     {% empty %}
                         暂无归档！
@@ -174,7 +174,8 @@
                 <ul id="category-list" class="list-group collapse in">
                     {% for category in category_list %}
                         <li class="list-group-item">
-                            <a href="{% url 'blog:category' category.pk %}">{{ category.name }}</a><span class="badge">{% get_count_of_category category.pk %}</span>
+                            <a href="{% url 'blog:category' category.pk %}">{{ category.name }}</a><span
+                                class="badge">{% get_count_of_category category.pk %}</span>
                         </li>
                     {% empty %}
                         暂无分类！
@@ -222,6 +223,28 @@
                             </li>
                         {% empty %}
                             暂无评论！
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
+            {# 最近访问ip#}
+            <div id="latest-viewer">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            <span class="glyphicon glyphicon-comment"></span>
+                            最新访问
+                        </h3>
+                    </div>
+                    <ul id="latest-viewer-list" class="list-group collapse in">
+                        {% get_recent_viewer as viewer_list %}
+                        {% for viewer in viewer_list %}
+                            <li class="list-group-item">
+                                <a>{{ viewer.ip }} 时间:{{ viewer.time |date:"Y-m-d h:m:s"}}</a>
+                            </li>
+                        {% empty %}
+                            暂无访问！
                         {% endfor %}
                     </ul>
                 </div>

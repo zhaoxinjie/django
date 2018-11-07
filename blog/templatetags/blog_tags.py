@@ -13,7 +13,7 @@
 from django import template
 from django.db.models import Count
 
-from ..models import Post, Category, Tag
+from ..models import Post, Category, Tag, Userip
 from comments.models import Comment
 
 register = template.Library()
@@ -65,5 +65,10 @@ def get_count_of_date(year, month):
 
 
 @register.simple_tag
-def get_most_views_host(num = 5):
+def get_most_views_host(num=5):
     return Post.objects.all().order_by('-views')[:num]
+
+
+@register.simple_tag
+def get_recent_viewer(num=6):
+    return Userip.objects.all().order_by('-time')[:num]

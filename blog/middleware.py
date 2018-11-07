@@ -21,7 +21,6 @@ logger = logging.getLogger('blog.middleware')
 
 class AccessMiddleware(object):
 
-
     def __init__(self, get_response):
         self.get_response = get_response
 
@@ -55,7 +54,11 @@ class AccessMiddleware(object):
         # else:
         #     client_ip = request.META['REMOTE_ADDR']  # 这里获得代理ip
 
-        client_ip = request.META['HTTP_REMOTE_ADDR']
+        if 'HTTP_REMOTE_ADDR' in request.META:
+            client_ip = request.META['HTTP_REMOTE_ADDR']
+        else:
+            client_ip = request.META['REMOTE_ADDR']
+
         if client_ip:
             uobj = Userip()
             uobj.ip = client_ip

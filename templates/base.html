@@ -241,7 +241,7 @@
                         {% get_recent_viewer as viewer_list %}
                         {% for viewer in viewer_list %}
                             <li class="list-group-item">
-                                <a>{{ viewer.ip }} 时间:{{ viewer.time |date:"Y-m-d h:m:s"}}</a>
+                                <a>{{ viewer.ip }} 时间:{{ viewer.time |date:"Y-m-d H:i:s"}}</a>
                             </li>
                         {% empty %}
                             暂无访问！

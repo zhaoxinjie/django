@@ -142,7 +142,7 @@
                     <div id="tag-cloud">
                         {% for tag in tag_list %}
 {#                            rel为标签下文章数量#}
-                            <a href="{% url 'blog:tag' tag.pk %}" rel="{{ tag.num_posts }}">tag</a>
+                            <a href="{% url 'blog:tag' tag.pk %}" rel="{{ tag.num_posts }}">{{ tag }}</a>
                         {% empty %}
                             暂无标签！
                         {% endfor %}

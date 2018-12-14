@@ -16,15 +16,15 @@
         <div class="well" style="padding: 0;">
             <p style="padding: 10px 0 0 0;">
                     <span style="margin-left: 20px"><i class="glyphicon glyphicon-user"></i>
-                            {{ post.author}}</span>
-                    <span style="margin-left: 20px"><i class="glyphicon glyphicon-time"></i>
-                            {{ post.created_time|date:"Y-m-d h:m" }}</span>
-                    <span style="margin-left: 20px"><i class="glyphicon glyphicon-comment"></i>
-                            {{ post.comment_set.count }}</span>
-                    <span style="margin-left: 20px"><i class="glyphicon glyphicon-eye-open"></i>
+                        {{ post.author }}</span>
+                <span style="margin-left: 20px"><i class="glyphicon glyphicon-time"></i>
+                    {{ post.created_time|date:"Y-m-d h:m" }}</span>
+                <span style="margin-left: 20px"><i class="glyphicon glyphicon-comment"></i>
+                    {{ post.comment_set.count }}</span>
+                <span style="margin-left: 20px"><i class="glyphicon glyphicon-eye-open"></i>
                             {{ post.views }}
                         </span>
-                </p>
+            </p>
         </div>
         <div class="entry-content clearfix">
             {{ post.body|safe }}
@@ -37,6 +37,12 @@
         <form action="{% url 'comments:post_comment' post.pk %}" method="post" class="comment-form">
             {% csrf_token %}
             <div class="row">
+                {#                <div class="input-group">#}
+                {#                    <span class="input-group-addon">名字：</span>#}
+                {#                    <input type="text" name="name" class="form-control" placeholder="name:">#}
+                {#                    {{ form.name }}#}
+                {#                    {{ form.name.errors }}#}
+                {#                </div>#}
                 <div class="col-md-4">
                     <label for="{{ form.name.id_for_label }}">名字：</label>
                     {{ form.name }}

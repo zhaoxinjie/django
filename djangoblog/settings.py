@@ -178,7 +178,7 @@ LOGGING = {
         'request_handler': {
             'level': 'DEBUG',
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': '/home/blog/sites/zhaoxinjie.xyz/logs/blog.log',
+            'filename': config('FILE_PATH'),
             'maxBytes': 1024 * 1024 * 5,
             'backupCount': 5,
             'formatter': 'verbose',

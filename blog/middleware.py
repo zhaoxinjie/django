@@ -39,14 +39,13 @@ class AccessMiddleware(object):
 
     def process_request(self, request):
         meta = request.META
-        # print("[%s] PATH_INFO=%s, REMOTE_ADDR=%s, HTTP_USER_AGENT=%s" % (
-        #     time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
-        #     meta['PATH_INFO'], meta['REMOTE_ADDR'], meta['HTTP_USER_AGENT']))
-        logger.info("[%s] PATH_INFO=%s, REMOTE_ADDR=%s, HTTP_USER_AGENT=%s" % (
-            time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
-            meta['PATH_INFO'], meta['REMOTE_ADDR'], meta['HTTP_USER_AGENT']))
-        logger.info('meta: ' + str(meta))
-
+        if 'HTTP_REMOTE_ADDR' in meta:
+            logger.info("[%s] PATH_INFO=%s, REMOTE_ADDR=%s, HTTP_USER_AGENT=%s, "
+                        "REQUEST_METHOD=%s, QUERY_STRING=%s" % (
+                            time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
+                            meta['PATH_INFO'], meta['HTTP_REMOTE_ADDR'], meta['HTTP_USER_AGENT'],
+                            meta['REQUEST_METHOD'], meta['QUERY_STRING']))
+        # logger.info('meta: ' + str(meta))
         # 使用nginx代理添加了remote_addr
         # if 'HTTP_X_FORWARDED_FOR' in request.META:  # 获取ip
         #     client_ip = request.META['HTTP_X_FORWARDED_FOR']

@@ -30,5 +30,8 @@ urlpatterns = [
     url(r'^tag/(?P<pk>[0-9]+)/$', views.TagView.as_view(), name='tag'),
     url(r'^all/rss/$', AllPostsRssFeed(), name='rss'),
     url(r'^search/$', views.search, name='search'),
+    url(r'^about$', views.about, name='about'),
+    url(r'^contact$', views.contact, name='contact'),
     url(r'', include('comments.urls')),
+
 ]

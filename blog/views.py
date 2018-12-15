@@ -147,3 +147,11 @@ class PostDetailView(DetailView):
             'comment_list': comment_list
         })
         return context
+
+
+def about(request):
+    return render(request, 'blog/about.html')
+
+
+def contact(request):
+    return render(request, 'blog/contact.html')

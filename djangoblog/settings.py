@@ -201,3 +201,12 @@ LOGGING = {
         }
     }
 }
+
+
+IMAGE_SAVING_PATH = config('IMAGE_SAVING_PATH')
+
+UPLOAD_HOST = config('UPLOAD_HOST')
+
+HOST_USER = config('HOST_USER')
+
+HOST_PASSWORD = config('HOST_PASSWORD')

@@ -13,7 +13,8 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
 from django.utils.html import strip_tags
-from easy_thumbnails.fields import ThumbnailerImageField
+
+from blog.file_funcs import ImageStorage
 
 
 class Category(models.Model):
@@ -83,7 +84,9 @@ class Post(models.Model):
     views = models.PositiveIntegerField(default=0)
 
     # 增加文章缩略图字段，首页展示时有图片
-    image = ThumbnailerImageField(upload_to='media', resize_source=dict(size=(200, 150), sharpen=True))
+    # image = ThumbnailerImageField(upload_to='media', resize_source=dict(size=(200, 150), sharpen=True))
+    # 图片只存链接
+    image = models.CharField(max_length=100)
 
     def __str__(self):
         return self.title
@@ -120,7 +123,7 @@ class Post(models.Model):
 # 访问网站的ip地址和次数
 class Userip(models.Model):
     ip = models.CharField(verbose_name='IP地址', max_length=30)
-    time = models.DateTimeField(verbose_name='访问时间',auto_now_add=True)
+    time = models.DateTimeField(verbose_name='访问时间', auto_now_add=True)
 
     class Meta:
         verbose_name = '访问用户信息'
@@ -130,3 +133,10 @@ class Userip(models.Model):
         return self.ip
 
 
+class BlogImage(models.Model):
+    name = models.CharField(max_length=30, verbose_name="名称")  # VOL001-1
+    desc = models.CharField(max_length=50, verbose_name="描述")
+    img_path = models.ImageField(upload_to="img", storage=ImageStorage(), verbose_name="路径")
+
+    def __str__(self):
+        return self.name

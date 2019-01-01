@@ -11,6 +11,7 @@
 import time
 
 from django.http import HttpResponse
+from django.utils.deprecation import MiddlewareMixin
 
 from blog.models import Userip
 
@@ -19,13 +20,7 @@ import logging
 logger = logging.getLogger('blog.middleware')
 
 
-class AccessMiddleware(object):
-
-    def __init__(self, get_response):
-        self.get_response = get_response
-
-    def __call__(self, request):
-        return self.get_response(request)
+class AccessMiddleware(MiddlewareMixin):
 
     def process_exception(self, request, exception):
         return HttpResponse(exception)
